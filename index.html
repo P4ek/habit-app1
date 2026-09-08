@@ -29,17 +29,37 @@
 <script>
   const form = document.getElementById('form');
   const lista = document.getElementById('lista');
+  const KLUCZ = 'wpisy';
+
+  let wpisy = JSON.parse(localStorage.getItem(KLUCZ) || '[]');
+
+  function tekst(w) {
+    return w.data + ' | ' + w.kategoria + ' | ' + w.wartosc +
+      (w.notatka ? ' | ' + w.notatka : '');
+  }
+
+  function render() {
+    lista.innerHTML = '';
+    wpisy.forEach(function (w) {
+      const li = document.createElement('li');
+      li.textContent = tekst(w);
+      lista.appendChild(li);
+    });
+  }
+
+  render();
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     const d = new FormData(form);
-    const li = document.createElement('li');
-    li.textContent =
-      d.get('data') + ' | ' +
-      d.get('kategoria') + ' | ' +
-      d.get('wartosc') +
-      (d.get('notatka') ? ' | ' + d.get('notatka') : '');
-    lista.appendChild(li);
+    wpisy.push({
+      data: d.get('data'),
+      kategoria: d.get('kategoria'),
+      wartosc: d.get('wartosc'),
+      notatka: d.get('notatka')
+    });
+    localStorage.setItem(KLUCZ, JSON.stringify(wpisy));
+    render();
     form.reset();
   });
 </script>
