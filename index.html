@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dziennik nawyków</title>
+</head>
+<body>
+<h1>Dziennik nawyków</h1>
+
+<form id="form">
+  <label>Data: <input type="date" name="data" required></label><br>
+  <label>Kategoria:
+    <select name="kategoria" required>
+      <option value="trening">trening</option>
+      <option value="jedzenie">jedzenie</option>
+      <option value="sen">sen</option>
+      <option value="czytanie">czytanie</option>
+      <option value="trading">trading</option>
+    </select>
+  </label><br>
+  <label>Wartość: <input type="text" name="wartosc" required></label><br>
+  <label>Notatka: <input type="text" name="notatka"></label><br>
+  <button type="submit">Dodaj</button>
+</form>
+
+<ul id="lista"></ul>
+
+<script>
+  const form = document.getElementById('form');
+  const lista = document.getElementById('lista');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const d = new FormData(form);
+    const li = document.createElement('li');
+    li.textContent =
+      d.get('data') + ' | ' +
+      d.get('kategoria') + ' | ' +
+      d.get('wartosc') +
+      (d.get('notatka') ? ' | ' + d.get('notatka') : '');
+    lista.appendChild(li);
+    form.reset();
+  });
+</script>
+</body>
+</html>
